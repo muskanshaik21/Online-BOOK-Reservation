@@ -1,0 +1,117 @@
+{% extends "base.html" %}
+{% block title %}Admin Dashboard — BookNest{% endblock %}
+{% block main_class %}container-fluid px-3 px-lg-4 py-4{% endblock %}
+{% block content %}
+<div class="mb-4"><span class="badge text-bg-dark">ADMIN PANEL</span><h1 class="fw-bold mt-2">Library control center</h1><p class="text-muted">Manage books, departments and reservations.</p></div>
+
+<div class="row g-3 mb-4">
+{% for label,value in [('Books',stats.books),('Users',stats.users),('Reservations',stats.reservations),('Active',stats.active)] %}
+<div class="col-6 col-lg-3"><div class="stat-card"><div class="stat-num">{{ value }}</div><div>{{ label }}</div></div></div>
+{% endfor %}
+</div>
+
+<div class="row g-4">
+<div class="col-lg-5">
+<div class="panel p-4 mb-4"><h4>Add book</h4>
+<form method="post" action="{{ url_for('add_book') }}">
+<input class="form-control mb-2" name="title" placeholder="Book title" required>
+<input class="form-control mb-2" name="author" placeholder="Author" required>
+<input class="form-control mb-2" name="isbn" placeholder="ISBN">
+<select class="form-select mb-2" name="subject_id" required>{% for s in subjects %}<option value="{{ s.id }}">{{ s.name }}</option>{% endfor %}</select>
+<input class="form-control mb-2" type="number" min="1" name="copies" placeholder="Copies" required>
+<input class="form-control mb-2" name="cover_url" placeholder="Cover image URL (optional)">
+<textarea class="form-control mb-3" name="description" placeholder="Description"></textarea>
+<button class="btn btn-dark w-100">Add book</button>
+</form></div>
+
+<div class="panel p-4">
+  <span class="section-kicker">Catalogue structure</span>
+  <h4 class="mt-1">Available departments</h4>
+  <form class="department-add-form" method="post" action="{{ url_for('add_subject') }}">
+    <input class="form-control" name="name" placeholder="New department name" required>
+    <input class="form-control" name="description" placeholder="Description (optional)">
+    <button class="btn btn-warning" type="submit">Add department</button>
+  </form>
+  <div class="department-records">
+    {% for department in subjects %}
+      <div class="department-record">
+        <span>{{ department.name }}</span>
+        <form method="post" action="{{ url_for('delete_subject', subject_id=department.id) }}">
+          <button class="department-delete" type="submit" aria-label="Delete {{ department.name }} department">Delete</button>
+        </form>
+      </div>
+    {% endfor %}
+  </div>
+</div>
+</div>
+
+<div class="col-lg-7">
+<div class="panel p-4 mb-4"><h4>Pickup &amp; return desk</h4><p class="text-muted small">Confirm collection, then track each seven-day loan until it is returned.</p>
+<div class="table-responsive"><table class="table align-middle"><thead><tr><th>User</th><th>Book</th><th>Deadline</th><th>Status</th><th>Action</th></tr></thead><tbody>
+{% for r in reservations %}
+<tr class="{% if r.is_overdue %}admin-overdue-row{% elif r.is_due_today %}admin-due-row{% endif %}">
+  <td>{{ r.user_name }}<br><small>{{ r.email }}</small></td>
+  <td><strong>{{ r.title }}</strong>{% if r.show_due_warning %} <span class="due-warning-icon" role="img" aria-label="{{ r.warning_text }}" title="{{ r.warning_text }}">&#9888;</span>{% endif %}<br><small>{{ r.author or 'Unknown author' }}</small></td>
+  <td>{{ r.deadline_label }}<br><strong>{{ r.deadline_at|replace('T',' ') }}</strong>{% if r.show_due_warning %}<br><small class="admin-deadline-warning">{{ r.warning_text }}</small>{% endif %}</td>
+  <td><span class="reservation-status status-{{ r.status_class }}">{{ r.display_status }}</span></td>
+  <td>
+    {% if r.status == 'Reserved' %}
+      <form method="post" action="{{ url_for('pickup_reservation', reservation_id=r.id) }}"><button class="btn btn-sm btn-primary text-nowrap">Picked up</button></form>
+    {% else %}
+      <form method="post" action="{{ url_for('complete_reservation', reservation_id=r.id) }}"><button class="btn btn-sm btn-success">Returned</button></form>
+    {% endif %}
+  </td>
+</tr>
+{% else %}<tr><td colspan="5">No books are waiting for pickup or return.</td></tr>{% endfor %}
+</tbody></table></div></div>
+</div>
+</div>
+
+<section class="panel inventory-panel mt-4">
+  <div class="inventory-panel-heading">
+    <div>
+      <span class="section-kicker">Complete catalogue</span>
+      <h2>Book inventory</h2>
+    </div>
+    <span class="section-count">{{ books|length }} of {{ total_inventory }} records</span>
+  </div>
+  <form class="inventory-toolbar" method="get" action="{{ url_for('admin_dashboard') }}">
+    <input class="form-control" name="inventory_q" value="{{ inventory_q }}" placeholder="Search title, author or ISBN" aria-label="Search book inventory">
+    <select class="form-select" name="inventory_department" aria-label="Filter inventory by department">
+      <option value="">All departments</option>
+      {% for department in subjects %}<option value="{{ department.id }}" {% if inventory_department|string == department.id|string %}selected{% endif %}>{{ department.name }}</option>{% endfor %}
+      <option value="others" {% if inventory_department == 'others' %}selected{% endif %}>Others / uncategorized</option>
+    </select>
+    <select class="form-select" name="inventory_sort" aria-label="Sort book inventory">
+      <option value="department" {% if inventory_sort == 'department' %}selected{% endif %}>Department</option>
+      <option value="title" {% if inventory_sort == 'title' %}selected{% endif %}>Book title</option>
+      <option value="author" {% if inventory_sort == 'author' %}selected{% endif %}>Author</option>
+      <option value="availability" {% if inventory_sort == 'availability' %}selected{% endif %}>Lowest availability</option>
+      <option value="newest" {% if inventory_sort == 'newest' %}selected{% endif %}>Newest added</option>
+    </select>
+    <button class="btn btn-dark" type="submit">Apply</button>
+    {% if inventory_q or inventory_department or inventory_sort != 'department' %}<a class="btn btn-outline-secondary" href="{{ url_for('admin_dashboard') }}">Clear</a>{% endif %}
+  </form>
+  <div class="inventory-scroll table-responsive">
+    <table class="table align-middle inventory-table">
+      <thead><tr><th>Book</th><th>Department</th><th>Available</th><th class="text-end">Actions</th></tr></thead>
+      <tbody>
+      {% for b in books %}
+        <tr>
+          <td><strong>{{ b.title }}</strong>{% if b.has_due_warning %} <span class="due-warning-icon" role="img" aria-label="Return due or overdue" title="A borrowed copy is due today or overdue">&#9888;</span>{% endif %}<br><small>{{ b.author or 'Unknown author' }}</small></td>
+          <td>{% if b.is_department and b.author %}{{ b.subject_name }}{% else %}<strong>Others</strong>{% if b.subject_name %}<br><small>{{ b.subject_name }}</small>{% endif %}{% endif %}</td>
+          <td>{{ b.available_copies }}/{{ b.total_copies }}</td>
+          <td>
+            <div class="inventory-actions">
+              <a class="btn btn-sm btn-outline-dark" href="{{ url_for('edit_book', book_id=b.id, inventory_q=inventory_q, inventory_department=inventory_department, inventory_sort=inventory_sort) }}">Edit</a>
+              <form method="post" action="{{ url_for('delete_book', book_id=b.id) }}"><button class="btn btn-sm btn-outline-danger">Delete</button></form>
+            </div>
+          </td>
+        </tr>
+      {% endfor %}
+      {% if not books %}<tr><td colspan="4" class="text-center text-muted py-5">No inventory records match these filters.</td></tr>{% endif %}
+      </tbody>
+    </table>
+  </div>
+</section>
+{% endblock %}

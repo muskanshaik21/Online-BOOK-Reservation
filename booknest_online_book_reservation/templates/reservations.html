@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block title %}My Reservations — BookNest{% endblock %}
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4"><div><h1 class="fw-bold">My Books</h1><p class="text-muted mb-0">Track books reserved in your name and their return status.</p></div><a class="btn btn-outline-dark" href="{{ url_for('index') }}">Browse books</a></div>
+<div class="row g-3">
+{% for r in reservations %}
+<div class="col-lg-6">
+  <div class="reservation-card {% if r.is_overdue %}is-overdue{% elif r.is_due_today %}is-due-today{% endif %}">
+    <div class="reservation-card-copy">
+      <span class="reservation-status status-{{ r.status_class }}">{{ r.display_status }}</span>
+      {% if r.show_due_warning %}<span class="reservation-warning-symbol" role="img" aria-label="{{ r.warning_text }}" title="{{ r.warning_text }}">&#9888;</span>{% endif %}
+      <h5 class="mt-2">{{ r.title }}</h5>
+      <p class="text-muted mb-1">by {{ r.author or 'Unknown author' }}</p>
+      <small>
+        Reserved: {{ r.reserved_at|replace('T',' ') }}
+        {% if r.borrowed_at %}<br>Picked up: {{ r.borrowed_at|replace('T',' ') }}{% endif %}
+        <br>{{ r.deadline_label }}: <strong>{{ r.deadline_at|replace('T',' ') }}</strong>
+        {% if r.returned_at %}<br>Returned: {{ r.returned_at|replace('T',' ') }}{% endif %}
+      </small>
+      {% if r.show_due_warning %}<div class="return-warning"><span aria-hidden="true">&#9888;</span> {{ r.warning_text }}</div>{% endif %}
+    </div>
+    {% if r.status == 'Reserved' %}<form method="post" action="{{ url_for('cancel_reservation', reservation_id=r.id) }}"><button class="btn btn-outline-danger btn-sm">Cancel reservation</button></form>{% endif %}
+  </div>
+</div>
+{% else %}<div class="col-12"><div class="empty-state">You have no reservations yet.</div></div>{% endfor %}
+</div>
+{% endblock %}

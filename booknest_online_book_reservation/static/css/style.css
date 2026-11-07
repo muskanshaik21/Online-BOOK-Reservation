@@ -1,0 +1,179 @@
+:root { --ink:#16202a; --muted:#697586; --cream:#f6f3ed; --gold:#ffc857; --line:#e8e4dc; --blue:#315bff; }
+body { background:#fbfaf7; color:var(--ink); font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif; }
+.nav-glass { background:#16202a; box-shadow:0 4px 20px rgba(0,0,0,.12); }
+.navbar-brand { display:inline-flex; align-items:center; gap:10px; letter-spacing:-.4px; }
+.brand-mark { flex:0 0 auto; display:inline-grid; place-items:center; width:42px; height:42px; border-radius:13px; color:#172432; background:var(--gold); font-size:.82rem; font-weight:900; letter-spacing:-.04em; box-shadow:0 7px 18px rgba(0,0,0,.14); }
+.user-pill { color:#e8edf2 !important; }
+.hero { background:linear-gradient(135deg,#18232e,#293b4c); color:#fff; border-radius:28px; box-shadow:0 18px 50px rgba(24,35,46,.18); }
+.hero p { color:#d7e0e8; max-width:720px; }
+.stat-card { background:#fff; border:1px solid var(--line); border-radius:18px; padding:20px; box-shadow:0 8px 24px rgba(22,32,42,.05); }
+.stat-num { font-size:2rem; font-weight:800; line-height:1; margin-bottom:7px; }
+.book-card { display:flex; flex-direction:column; background:#fff; border:1px solid var(--line); border-radius:18px; overflow:hidden; box-shadow:0 8px 24px rgba(22,32,42,.05); transition:.2s; }
+.book-card:hover { transform:translateY(-4px); box-shadow:0 15px 34px rgba(22,32,42,.10); }
+.book-card-body { display:flex; flex:1; flex-direction:column; }
+.book-cover { width:100%; height:285px; object-fit:cover; object-position:center top; background:#eee; }
+.cover-fallback { height:220px; display:flex; align-items:center; justify-content:center; text-align:center; color:#fff; background:linear-gradient(145deg,#172432 0%,#315bff 100%); position:relative; overflow:hidden; }
+.cover-fallback::before { content:""; position:absolute; width:180px; height:180px; border:1px solid rgba(255,255,255,.17); border-radius:50%; right:-55px; top:-70px; box-shadow:0 0 0 28px rgba(255,255,255,.04); }
+.cover-fallback span { font-size:1.35rem; font-weight:900; letter-spacing:.18em; line-height:1.15; z-index:1; }
+.cover-fallback small { font-size:.64rem; letter-spacing:.08em; opacity:.75; }
+.subject-tag { display:inline-block; padding:5px 10px; border-radius:999px; background:#f0eadc; font-size:.75rem; font-weight:700; color:#68521d; }
+.collection-section { margin-top:2.5rem; padding-top:.75rem; }
+.collection-section + .collection-section { margin-top:4.25rem; }
+.collection-section-header { display:flex; align-items:center; gap:18px; margin-bottom:20px; }
+.collection-section-header h3 { margin:1px 0 0; font-size:1.75rem; font-weight:850; letter-spacing:-.035em; }
+.section-kicker { color:#596675; font-size:.67rem; font-weight:800; letter-spacing:.17em; text-transform:uppercase; }
+.section-count { flex:0 0 auto; padding:7px 12px; border:1px solid var(--line); border-radius:999px; background:#fff; color:var(--muted); font-size:.76rem; font-weight:700; }
+.section-line { flex:1; height:1px; background:linear-gradient(90deg,var(--line),transparent); }
+.book-front { --cover-1:#162f59; --cover-2:#315bff; position:relative; isolation:isolate; display:flex; flex-direction:column; min-height:285px; padding:22px; overflow:hidden; color:#fff; background:linear-gradient(145deg,var(--cover-1),var(--cover-2)); }
+.book-front::before { content:""; position:absolute; z-index:-1; width:260px; height:260px; right:-116px; top:-120px; border:1px solid rgba(255,255,255,.2); border-radius:50%; box-shadow:0 0 0 31px rgba(255,255,255,.045),0 0 0 64px rgba(255,255,255,.025); }
+.book-front::after { content:""; position:absolute; z-index:-1; inset:auto 0 0; height:7px; background:rgba(255,255,255,.18); }
+.book-front[data-department="CSE"] { --cover-1:#102b52; --cover-2:#2366d7; }
+.book-front[data-department="ECE"] { --cover-1:#261f5f; --cover-2:#6555dc; }
+.book-front[data-department="EEE"] { --cover-1:#493116; --cover-2:#c98220; }
+.book-front[data-department="EIE"] { --cover-1:#153b3a; --cover-2:#1d8b7d; }
+.book-front[data-department="Mechanical"] { --cover-1:#4c2028; --cover-2:#bb4454; }
+.book-front[data-department="Civil"] { --cover-1:#3d2b20; --cover-2:#9a6440; }
+.book-front[data-department="AI & DS"] { --cover-1:#251d5b; --cover-2:#6949e8; }
+.book-front[data-department="IT"] { --cover-1:#123749; --cover-2:#197c9c; }
+.book-front-department { align-self:flex-start; padding:5px 9px; border:1px solid rgba(255,255,255,.25); border-radius:999px; background:rgba(255,255,255,.12); font-size:.67rem; font-weight:800; letter-spacing:.09em; text-transform:uppercase; }
+.book-front-copy { display:flex; flex:1; flex-direction:column; justify-content:center; padding:22px 0 18px; }
+.book-front-edition { margin-bottom:10px; color:rgba(255,255,255,.7); font-size:.59rem; font-weight:750; letter-spacing:.15em; text-transform:uppercase; }
+.book-front-copy strong { max-width:95%; font-size:1.5rem; line-height:1.08; letter-spacing:-.035em; }
+.book-front-author { margin-top:13px; color:rgba(255,255,255,.8); font-family:Georgia,serif; font-size:.88rem; }
+.book-front-mark { align-self:flex-end; display:grid; place-items:center; width:35px; height:35px; border-radius:9px; background:#fff; color:var(--cover-1); font-size:.7rem; font-weight:900; letter-spacing:-.03em; }
+.detail-book-front { min-height:500px; border-radius:22px; box-shadow:0 18px 45px rgba(22,32,42,.18); }
+.detail-book-front .book-front-copy strong { font-size:clamp(2rem,4vw,3rem); }
+.detail-book-front .book-front-author { font-size:1.05rem; }
+.detail-cover { width:100%; max-height:520px; object-fit:cover; border-radius:22px; background:#eee; }
+.detail-fallback { height:420px; border-radius:22px; background:linear-gradient(135deg,#eee8db,#d9e0e5); display:flex; align-items:center; justify-content:center; font-size:7rem; }
+.info-box { border:1px solid var(--line); background:#fff; border-radius:14px; padding:14px; }
+.info-box small,.info-box strong { display:block; }
+.info-box small { color:var(--muted); }
+.auth-wrap { min-height:70vh; display:flex; justify-content:center; align-items:center; }
+.auth-card { width:100%; max-width:450px; background:#fff; border:1px solid var(--line); padding:35px; border-radius:24px; box-shadow:0 18px 50px rgba(22,32,42,.08); }
+.big-icon { font-size:3rem; margin-bottom:10px; }
+.login-shell { min-height:710px; display:grid; grid-template-columns:1.08fr .92fr; background:#fff; border:1px solid var(--line); border-radius:30px; overflow:hidden; box-shadow:0 30px 80px rgba(22,32,42,.13); }
+.login-showcase { position:relative; isolation:isolate; overflow:hidden; padding:58px; color:#fff; background:radial-gradient(circle at 85% 15%,rgba(76,107,255,.7),transparent 30%),linear-gradient(145deg,#111c29,#1e3448 55%,#24425d); }
+.login-showcase::after { content:""; position:absolute; inset:auto -100px -150px auto; width:430px; height:430px; border:1px solid rgba(255,255,255,.12); border-radius:50%; box-shadow:0 0 0 45px rgba(255,255,255,.03),0 0 0 90px rgba(255,255,255,.025); z-index:-1; }
+.showcase-content { max-width:520px; }
+.login-brand { display:inline-flex; align-items:center; gap:11px; color:#fff; text-decoration:none; font-weight:800; font-size:1.16rem; margin-bottom:100px; }
+.eyebrow { margin:0 0 13px; font-size:.73rem; font-weight:800; letter-spacing:.18em; color:#ffd779; }
+.login-showcase h1 { max-width:540px; font-size:clamp(2.5rem,5vw,4.7rem); line-height:.96; letter-spacing:-.055em; margin-bottom:24px; }
+.showcase-copy { max-width:510px; color:#ccd8e3; font-size:1.05rem; line-height:1.7; }
+.login-benefits { display:grid; grid-template-columns:repeat(3,1fr); gap:14px; margin-top:52px; }
+.login-benefits div { padding:17px 14px; border:1px solid rgba(255,255,255,.13); background:rgba(255,255,255,.06); border-radius:15px; backdrop-filter:blur(5px); }
+.login-benefits strong,.login-benefits span { display:block; }
+.login-benefits strong { font-size:1.25rem; color:#fff; }
+.login-benefits span { margin-top:3px; color:#aebfce; font-size:.76rem; }
+.shelf-art { position:absolute; right:38px; bottom:36px; display:flex; align-items:flex-end; gap:5px; opacity:.17; }
+.shelf-art span { display:block; width:12px; height:68px; background:#fff; border-radius:2px 2px 0 0; transform:rotate(-5deg); }
+.shelf-art span:nth-child(2) { height:84px; transform:none; }
+.shelf-art span:nth-child(3) { height:59px; transform:rotate(4deg); }
+.shelf-art span:nth-child(4) { height:96px; transform:none; }
+.shelf-art span:nth-child(5) { height:72px; transform:rotate(-3deg); }
+.shelf-art span:nth-child(6) { height:88px; transform:rotate(5deg); }
+.login-panel { display:grid; place-items:center; padding:58px; background:linear-gradient(180deg,#fff,#fbfaf7); }
+.login-form-wrap { width:100%; max-width:410px; }
+.login-icon { display:grid; place-items:center; width:52px; height:52px; margin-bottom:26px; border-radius:16px; color:#fff; background:var(--blue); font-size:1.45rem; box-shadow:0 12px 25px rgba(49,91,255,.25); }
+.login-form-wrap h2 { font-size:2.35rem; font-weight:800; letter-spacing:-.04em; }
+.login-form-wrap .form-label { font-weight:700; font-size:.86rem; }
+.login-form-wrap .form-control { border-radius:12px; border-color:#dfe3e8; padding:13px 15px; font-size:.96rem; }
+.login-form-wrap .form-control:focus { border-color:var(--blue); box-shadow:0 0 0 .23rem rgba(49,91,255,.12); }
+.login-button { display:flex; align-items:center; justify-content:space-between; padding:13px 18px; border-radius:12px; font-weight:700; }
+.login-button span { font-size:1.35rem; }
+.login-divider { display:flex; align-items:center; gap:12px; margin:27px 0 18px; color:#8b949e; font-size:.78rem; }
+.login-divider::before,.login-divider::after { content:""; flex:1; height:1px; background:#e4e7eb; }
+.login-help { text-align:center; color:#8b949e; font-size:.78rem; margin:25px 0 0; }
+.reservation-card { position:relative; background:#fff; border:1px solid var(--line); border-radius:18px; padding:20px; display:flex; justify-content:space-between; gap:15px; align-items:center; }
+.reservation-card.is-due-today { border-color:#e4ac22; box-shadow:0 10px 28px rgba(228,172,34,.15); }
+.reservation-card.is-overdue { border-color:#dc6570; box-shadow:0 10px 28px rgba(201,58,69,.14); }
+.reservation-card-copy { min-width:0; }
+.reservation-status { display:inline-flex; align-items:center; padding:5px 10px; border-radius:999px; font-size:.75rem; font-weight:800; }
+.status-info { color:#075985; background:#e0f2fe; }
+.status-primary { color:#1e40af; background:#dbeafe; }
+.status-success { color:#166534; background:#dcfce7; }
+.status-warning { color:#7c4a03; background:#fef3c7; }
+.status-danger { color:#991b1b; background:#fee2e2; }
+.status-secondary { color:#475569; background:#e9eef3; }
+.reservation-warning-symbol,.due-warning-icon { display:inline-grid; place-items:center; color:#c67b05; font-size:1.08rem; vertical-align:middle; }
+.reservation-warning-symbol { margin-left:6px; }
+.is-overdue .reservation-warning-symbol,.admin-overdue-row .due-warning-icon { color:#c93a45; }
+.return-warning { width:fit-content; margin-top:12px; padding:8px 11px; border-radius:9px; color:#744604; background:#fff3cd; font-size:.78rem; font-weight:750; }
+.is-overdue .return-warning { color:#8f1f2a; background:#fde7e9; }
+.admin-due-row > td { background:#fffaf0; }
+.admin-overdue-row > td { background:#fff5f6; }
+.admin-deadline-warning { color:#b35f00; font-weight:750; }
+.admin-overdue-row .admin-deadline-warning { color:#c12f3d; }
+.panel { background:#fff; border:1px solid var(--line); border-radius:20px; box-shadow:0 8px 24px rgba(22,32,42,.05); }
+.department-add-form { display:grid; grid-template-columns:1fr 1.35fr auto; gap:8px; margin:18px 0; }
+.department-records { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:9px; margin-top:17px; }
+.department-record { display:flex; align-items:center; min-height:45px; padding:6px 7px 6px 12px; border:1px solid #e0e4e8; border-radius:11px; background:#f8f9fa; }
+.department-record > span { display:flex; flex:1; align-items:center; min-width:0; color:#273645; font-size:.84rem; font-weight:750; }
+.department-record > span::before { content:""; flex:0 0 auto; width:7px; height:7px; margin-right:9px; border-radius:50%; background:var(--blue); box-shadow:0 0 0 4px rgba(49,91,255,.1); }
+.department-record form { flex:0 0 auto; }
+.department-delete { padding:5px 8px; border:0; border-radius:7px; color:#c93a45; background:transparent; font-size:.72rem; font-weight:750; }
+.department-delete:hover,.department-delete:focus-visible { color:#fff; background:#c93a45; outline:none; }
+.inventory-panel { width:100%; overflow:hidden; }
+.inventory-panel-heading { display:flex; align-items:center; justify-content:space-between; gap:20px; padding:28px 30px 18px; border-bottom:1px solid var(--line); }
+.inventory-panel-heading h2 { margin:2px 0 0; font-size:1.8rem; font-weight:800; letter-spacing:-.035em; }
+.inventory-toolbar { display:grid; grid-template-columns:minmax(240px,1.8fr) minmax(190px,1fr) minmax(180px,1fr) auto auto; gap:10px; padding:16px 30px; border-bottom:1px solid var(--line); background:#fbfcfd; }
+.inventory-scroll { width:100%; max-height:68vh; overflow:auto; overscroll-behavior:contain; scrollbar-color:#9ba5af #eef0f2; scrollbar-width:thin; }
+.inventory-scroll::-webkit-scrollbar { width:10px; height:10px; }
+.inventory-scroll::-webkit-scrollbar-track { background:#eef0f2; }
+.inventory-scroll::-webkit-scrollbar-thumb { background:#9ba5af; border:2px solid #eef0f2; border-radius:999px; }
+.inventory-table { min-width:840px; margin:0; }
+.inventory-table thead th { position:sticky; z-index:2; top:0; padding:16px 30px; border-bottom:1px solid #d9dde2; background:#fff; box-shadow:0 2px 0 rgba(22,32,42,.03); }
+.inventory-table tbody td { padding:15px 30px; }
+.inventory-table tbody tr:last-child td { border-bottom:0; }
+.inventory-table th:first-child,.inventory-table td:first-child { width:47%; }
+.inventory-table th:nth-child(2),.inventory-table td:nth-child(2) { width:20%; }
+.inventory-table th:nth-child(3),.inventory-table td:nth-child(3) { width:15%; }
+.inventory-table th:last-child,.inventory-table td:last-child { width:18%; }
+.inventory-actions { display:flex; align-items:center; justify-content:flex-end; gap:8px; white-space:nowrap; }
+.inventory-actions form { margin:0; }
+.edit-book-shell { max-width:920px; margin:0 auto; }
+.edit-book-panel { padding:clamp(24px,4vw,46px); }
+.edit-book-panel h1 { margin:.2rem 0 .4rem; font-size:clamp(2rem,4vw,3rem); font-weight:850; letter-spacing:-.045em; }
+.edit-book-form { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:18px; margin-top:28px; }
+.edit-book-form .full-width { grid-column:1 / -1; }
+.edit-book-form .form-label { font-size:.82rem; font-weight:750; }
+.edit-book-form .form-control,.edit-book-form .form-select { border-radius:11px; padding:11px 13px; }
+.edit-book-help { padding:13px 15px; border:1px solid #dce3ea; border-radius:12px; color:var(--muted); background:#f7f9fb; font-size:.83rem; }
+.edit-book-actions { display:flex; justify-content:flex-end; gap:10px; margin-top:26px; }
+.empty-state { background:#fff; border:1px dashed #c9c3b8; padding:50px; text-align:center; border-radius:20px; color:var(--muted); }
+.footer { background:#16202a; color:#aeb9c4; }
+a { color:#4b5f73; }
+.btn-warning { color:#211a08; font-weight:700; }
+table small { color:var(--muted); }
+
+@media (max-width: 991px) {
+  .login-shell { grid-template-columns:1fr; }
+  .login-showcase { padding:42px; }
+  .login-brand { margin-bottom:55px; }
+  .login-benefits { margin-top:35px; }
+  .login-panel { padding:48px 35px; }
+  .inventory-toolbar { grid-template-columns:1fr 1fr; }
+  .inventory-toolbar input { grid-column:1 / -1; }
+}
+
+@media (max-width: 575px) {
+  main.container { padding-left:14px; padding-right:14px; }
+  .navbar .nav-link { padding:.35rem .45rem; font-size:.82rem; }
+  .user-pill { display:none; }
+  .login-shell { border-radius:20px; }
+  .login-showcase { padding:30px 24px; }
+  .login-brand { margin-bottom:40px; }
+  .login-showcase h1 { font-size:2.7rem; }
+  .login-benefits { grid-template-columns:1fr; gap:8px; }
+  .login-benefits div { display:flex; justify-content:space-between; align-items:center; }
+  .login-benefits span { margin:0; }
+  .login-panel { padding:42px 24px; }
+  .department-add-form,.inventory-toolbar { grid-template-columns:1fr; }
+  .inventory-toolbar input { grid-column:auto; }
+  .inventory-panel-heading { padding:22px 18px 14px; }
+  .inventory-table thead th,.inventory-table tbody td { padding-left:18px; padding-right:18px; }
+  .edit-book-form { grid-template-columns:1fr; }
+  .edit-book-form .full-width { grid-column:auto; }
+  .edit-book-actions { flex-direction:column-reverse; }
+  .edit-book-actions .btn { width:100%; }
+}

@@ -1,0 +1,90 @@
+{% extends "base.html" %}
+{% block title %}BookNest — Browse Books{% endblock %}
+{% block content %}
+<section class="hero p-4 p-lg-5 mb-4">
+  <div class="row align-items-center">
+    <div class="col-lg-8">
+      <span class="badge text-bg-warning mb-3">COLLEGE LIBRARY PORTAL</span>
+      <h1 class="display-5 fw-bold">Find your next reference. Reserve it in seconds.</h1>
+      <p class="lead">Explore books across eight engineering departments and reserve an available copy with a 3-day pickup window.</p>
+      <form class="row g-2 mt-3" method="get">
+        <div class="col-lg-4"><input class="form-control form-control-lg" name="q" value="{{ q }}" placeholder="Title, author or ISBN" aria-label="Search books"></div>
+        <div class="col-md-3">
+          <select class="form-select form-select-lg" name="department" aria-label="Filter by department">
+            <option value="">All departments</option>
+            {% for department in departments %}<option value="{{ department.id }}" {% if selected_department|string == department.id|string %}selected{% endif %}>{{ department.name }}</option>{% endfor %}
+          </select>
+        </div>
+        <div class="col-md-3">
+          <select class="form-select form-select-lg" name="sort" aria-label="Sort book collection">
+            <option value="department" {% if selected_sort == 'department' %}selected{% endif %}>Department wise</option>
+            <option value="author_asc" {% if selected_sort == 'author_asc' %}selected{% endif %}>Author: A to Z</option>
+            <option value="author_desc" {% if selected_sort == 'author_desc' %}selected{% endif %}>Author: Z to A</option>
+            <option value="title" {% if selected_sort == 'title' %}selected{% endif %}>Book title: A to Z</option>
+          </select>
+        </div>
+        <div class="col-lg-2"><button class="btn btn-warning btn-lg w-100">Apply</button></div>
+      </form>
+    </div>
+  </div>
+</section>
+
+<div class="row g-3 mb-4">
+  <div class="col-6 col-lg-3"><div class="stat-card"><div class="stat-num">{{ stats.books }}</div><div>Total Books</div></div></div>
+  <div class="col-6 col-lg-3"><div class="stat-card"><div class="stat-num">{{ stats.departments }}</div><div>Departments</div></div></div>
+  <div class="col-6 col-lg-3"><div class="stat-card"><div class="stat-num">{{ stats.available }}</div><div>Copies Available</div></div></div>
+  <div class="col-6 col-lg-3"><div class="stat-card"><div class="stat-num">{{ stats.reservations }}</div><div>Active Reservations</div></div></div>
+</div>
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+  <div>
+    <h2 class="fw-bold mb-0">Book collection</h2>
+    <small class="text-muted">{{ books|length }} result(s) · {% if selected_sort == 'department' %}Department wise{% elif selected_sort == 'author_desc' %}Author Z–A{% elif selected_sort == 'title' %}Title A–Z{% else %}Author A–Z{% endif %}</small>
+  </div>
+  {% if q or selected_department %}<a class="btn btn-outline-dark btn-sm" href="{{ url_for('index') }}">Clear filters</a>{% endif %}
+</div>
+
+{% for section in book_sections %}
+<section class="collection-section">
+  <header class="collection-section-header">
+    <div>
+      <span class="section-kicker">{{ section.label }}</span>
+      <h3>{{ section.heading }}</h3>
+    </div>
+    <span class="section-count">{{ section.books|length }} book{% if section.books|length != 1 %}s{% endif %}</span>
+    <span class="section-line" aria-hidden="true"></span>
+  </header>
+
+  <div class="row g-4">
+  {% for book in section.books %}
+    <div class="col-md-6 col-lg-4 col-xl-3">
+      <article class="book-card h-100">
+        {% if book.cover_url %}
+          <img src="{{ book.cover_url }}" class="book-cover" alt="Front cover of {{ book.title }}">
+        {% else %}
+          <div class="book-front" data-department="{{ book.subject_name or 'Others' }}" role="img" aria-label="Front cover of {{ book.title }} by {{ book.author or 'Unknown author' }}">
+            <span class="book-front-department">{{ book.subject_name or 'Others' }}</span>
+            <div class="book-front-copy">
+              <span class="book-front-edition">BookNest academic collection</span>
+              <strong>{{ book.title }}</strong>
+              <span class="book-front-author">{{ book.author or 'Unknown author' }}</span>
+            </div>
+            <span class="book-front-mark">BN</span>
+          </div>
+        {% endif %}
+        <div class="book-card-body p-3">
+          <span class="subject-tag align-self-start">{{ book.subject_name or 'Others' }}</span>
+          <h5 class="mt-2 mb-1">{{ book.title }}</h5>
+          <div class="text-muted small mb-2">by {{ book.author or 'Unknown author' }}</div>
+          <div class="small mb-3"><strong>{{ book.available_copies }}</strong> / {{ book.total_copies }} copies available</div>
+          <a class="btn btn-dark w-100 mt-auto" href="{{ url_for('book_detail', book_id=book.id) }}">View & Reserve</a>
+        </div>
+      </article>
+    </div>
+  {% endfor %}
+  </div>
+</section>
+{% else %}
+  <div class="empty-state">No books match your search.</div>
+{% endfor %}
+{% endblock %}
